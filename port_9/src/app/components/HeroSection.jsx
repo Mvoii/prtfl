@@ -24,11 +24,11 @@ const HeroSection = () => {
               sequence={[
                 "Frank",
                 1000,
-                "Fullstack Developer",
+                "a Fullstack Developer",
                 1000,
-                "Mobile Developer",
+                "a Mobile Developer",
                 1000,
-                "Data Scientist",
+                "a Data Scientist",
                 1000,
               ]}
               wrapper="span"
