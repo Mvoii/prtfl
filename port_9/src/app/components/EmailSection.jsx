@@ -6,58 +6,69 @@ import Link from "next/link";
 import Image from "next/image";
 import emailjs from '@emailjs/browser';
 
-// TODO: fix the email
-
-/*const EmailSection = () => {
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
-
-    // Form the request for sending data to the server.
-    const options = {
-      // The method is POST because we are sending data.
-      method: "POST",
-      // Tell the server we're sending JSON.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    };
-
-    const response = await fetch(endpoint, options);
-    const resData = await response.json();
-
-    if (response.status === 200) {
-      console.log("Message sent.");
-      setEmailSubmitted(true);
-    }
-  };*/
-
-
 const EmailSection = () => {
  const form = useRef();
 
- const sendEmail = (e) => {
-   e.preventDefault(); // prevents the page from reloading when you hit “Send”
+ const [email, setEmail] = useState("");
+ const [message, setMessage] = useState("");
+ const [isLoading, setIsLoading] = useState(false);
+ const [subject, setSubject] = useState("");
 
-   emailjs.sendForm(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, form.current, process.env.YOUR_PUBLIC_KEY)
-     .then((result) => {
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+ const sendEmail = (e) => {
+  e.preventDefault();
+
+  if (!email) {
+    setError("Please enter your email");
+    return;
+  }
+  if (!message) {
+    setError("Please enter your message");
+    return;
+  }
+
+  const templateParams = {
+    from_name: email,
+    to_name: "Frank Mvoi",
+    subject,
+    message
+  };
+
+  setError("")
+  setIsLoading(true)
+  //e.preventDefault(); // prevents the page from reloading when you hit “Send”
+
+  emailjs
+    .send(
+      process.env.YOUR_SERVICE_ID, 
+      process.env.YOUR_TEMPLATE_ID, 
+      templateParams,
+      process.env.YOUR_PUBLIC_KEY
+    )
+    .then(
+      (response) => {
+        setEmail("");
+        setSubject("");
+        setMessage("");
+        setIsLoading(false);
+        setSuccess("Your message has been sent successfully. I will get back soon.")
+      },
+      (error) => {
+        setError("Some error occured. Please send me a direct email.")
+        console.error(error);
+        setIsLoading(false);
+      },
+    );
+     /*((result) => {
          // show the user a success message
-         console.log("Email Sent Successfully!");
+         console.log("Email Sent Successfully!", result.text);
      }, (error) => {
          // show the user an error
-         console.log("Failed", error.text);
-     });
- };
+         console.log("Email not sent!", error.text);
+     });*/
+  };
 
 /*return (
    <form ref={form} onSubmit={sendEmail}>
@@ -114,6 +125,7 @@ export default EmailContactForm;*/
                 type="email"
                 id="email"
                 required
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 placeholder="johndoe@example.com"
               />
@@ -130,6 +142,7 @@ export default EmailContactForm;*/
                 type="text"
                 id="subject"
                 required
+                onChange={(e) => setSubject(e.target.value)}
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 placeholder="Just saying hi"
               />
@@ -144,6 +157,8 @@ export default EmailContactForm;*/
               <textarea
                 name="message"
                 id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 placeholder="Let's talk about..."
               />
@@ -151,6 +166,8 @@ export default EmailContactForm;*/
             <button
               type="submit"
               value="Send"
+              onClick={sendEmail}
+              disabled={isLoading}
               className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
             >
               Send Message
