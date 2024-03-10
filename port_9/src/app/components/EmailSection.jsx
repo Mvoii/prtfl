@@ -1,14 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
-
+import emailjs from '@emailjs/browser';
 
 // TODO: fix the email
 
-const EmailSection = () => {
+/*const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -40,7 +40,39 @@ const EmailSection = () => {
       console.log("Message sent.");
       setEmailSubmitted(true);
     }
-  };
+  };*/
+
+
+const EmailSection = () => {
+ const form = useRef();
+
+ const sendEmail = (e) => {
+   e.preventDefault(); // prevents the page from reloading when you hit “Send”
+
+   emailjs.sendForm(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, form.current, process.env.YOUR_PUBLIC_KEY)
+     .then((result) => {
+         // show the user a success message
+         console.log("Email Sent Successfully!");
+     }, (error) => {
+         // show the user an error
+         console.log("Failed", error.text);
+     });
+ };
+
+/*return (
+   <form ref={form} onSubmit={sendEmail}>
+     <label>Name</label>
+     <input type="text" name="user_name" />
+     <label>Email</label>
+     <input type="email" name="user_email" />
+     <label>Message</label>
+     <textarea name="message" />
+     <input type="submit" value="Send" />
+   </form>
+ );
+};
+
+export default EmailContactForm;*/
 
   return (
     <section
@@ -68,12 +100,8 @@ const EmailSection = () => {
         </div>
       </div>
       <div>
-        {emailSubmitted ? (
-          <p className="text-green-500 text-sm mt-2">
-            Email sent successfully!
-          </p>
-        ) : (
-          <form className="flex flex-col" onSubmit={handleSubmit}>
+        {(
+          <form className="flex flex-col" ref={form} onSubmit={sendEmail}>
             <div className="mb-6">
               <label
                 htmlFor="email"
@@ -82,7 +110,7 @@ const EmailSection = () => {
                 Your email
               </label>
               <input
-                name="email"
+                name="user_email"
                 type="email"
                 id="email"
                 required
@@ -122,6 +150,7 @@ const EmailSection = () => {
             </div>
             <button
               type="submit"
+              value="Send"
               className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
             >
               Send Message
