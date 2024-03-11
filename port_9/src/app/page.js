@@ -5,6 +5,9 @@ import ProjectsSection from "./components/ProjectsSection";
 import EmailSection from "./components/EmailSection";
 import Footer from "./components/Footer";
 import AchievementsSection from "./components/AchievementsSection";
+//import emailjs from "emailjs-com";
+
+//emailjs.init(process.env.MY_USER_ID)
 
 export default function Home() {
   return (

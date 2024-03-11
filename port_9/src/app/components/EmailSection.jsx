@@ -4,76 +4,8 @@ import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
-import emailjs from '@emailjs/browser';
-
-// TODO: fix the email
-
-/*const EmailSection = () => {
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
-
-    // Form the request for sending data to the server.
-    const options = {
-      // The method is POST because we are sending data.
-      method: "POST",
-      // Tell the server we're sending JSON.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    };
-
-    const response = await fetch(endpoint, options);
-    const resData = await response.json();
-
-    if (response.status === 200) {
-      console.log("Message sent.");
-      setEmailSubmitted(true);
-    }
-  };*/
-
 
 const EmailSection = () => {
- const form = useRef();
-
- const sendEmail = (e) => {
-   e.preventDefault(); // prevents the page from reloading when you hit “Send”
-
-   emailjs.sendForm(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, form.current, process.env.YOUR_PUBLIC_KEY)
-     .then((result) => {
-         // show the user a success message
-         console.log("Email Sent Successfully!");
-     }, (error) => {
-         // show the user an error
-         console.log("Failed", error.text);
-     });
- };
-
-/*return (
-   <form ref={form} onSubmit={sendEmail}>
-     <label>Name</label>
-     <input type="text" name="user_name" />
-     <label>Email</label>
-     <input type="email" name="user_email" />
-     <label>Message</label>
-     <textarea name="message" />
-     <input type="submit" value="Send" />
-   </form>
- );
-};
-
-export default EmailContactForm;*/
-
   return (
     <section
       id="contact"
@@ -100,63 +32,24 @@ export default EmailContactForm;*/
         </div>
       </div>
       <div>
-        {(
-          <form className="flex flex-col" ref={form} onSubmit={sendEmail}>
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="text-white block mb-2 text-sm font-medium"
-              >
-                Your email
+        <section className="flex flex-col lg:mt-40 md:mt-40">
+          <div className="mb-2">
+            <label className="text-primary-400 block mb-2 text-sm font-medium font-color-primary">
+              My Email:
+              <label className="text-gray-100 text-sm p-2.5">
+                mvoifranklin@gmail.com
               </label>
-              <input
-                name="user_email"
-                type="email"
-                id="email"
-                required
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="johndoe@example.com"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="subject"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Subject
+            </label>
+          </div>
+          <div className="mb-6">
+            <label className="text-primary-400 block text-sm mb-2 font-medium">
+              Phone Number:
+              <label className="text-gray-100 text-sm p-2.5">
+                +2541234567
               </label>
-              <input
-                name="subject"
-                type="text"
-                id="subject"
-                required
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Just saying hi"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Message
-              </label>
-              <textarea
-                name="message"
-                id="message"
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Let's talk about..."
-              />
-            </div>
-            <button
-              type="submit"
-              value="Send"
-              className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
-            >
-              Send Message
-            </button>
-          </form>
-        )}
+            </label>
+          </div>
+        </section>
       </div>
     </section>
   );
