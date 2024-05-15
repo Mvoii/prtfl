@@ -45,7 +45,7 @@ const EmailSection = () => {
             <label className="text-primary-400 block text-sm mb-2 font-medium">
               Phone Number:
               <label className="text-gray-100 text-sm p-2.5">
-                +2541234567
+                +254 748194691
               </label>
             </label>
           </div>
